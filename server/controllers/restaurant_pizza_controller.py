@@ -49,3 +49,67 @@ def create_RestaurantPizza():
     }
     return jsonify(response), 201
 
+@restaurant_pizza_cntrl.route('/restaurant_pizzas', methods=['GET'])
+def get_all_REstaurantPizzas():
+    restaurant_pizzas = RestaurantPizza.query.all()
+    
+    if not restaurant_pizzas:
+        return jsonify({"error": "No RestaurantPizzas found"}), 404
+
+    response = []
+    for rp in restaurant_pizzas:
+        pizza = Pizza.query.get(rp.pizza_id)
+        restaurant = Restaurant.query.get(rp.restaurant_id)
+
+        if not pizza or not restaurant:
+            continue  
+
+        response.append({
+            "id": rp.id,
+            "price": rp.price,
+            "pizza_id": rp.pizza_id,
+            "restaurant_id": rp.restaurant_id,
+            "pizza": {
+                "id": pizza.id,
+                "name": pizza.name,
+                "ingredients": pizza.ingredients
+            },
+            "restaurant": {
+                "id": restaurant.id,
+                "name": restaurant.name,
+                "address": restaurant.address
+            }
+        })
+    
+    return jsonify(response), 200
+
+@restaurant_pizza_cntrl.route('/restaurant_pizzas/<int:id>', methods=['GET'])
+def get_REstaurantPizza(id):
+    restaurant_pizza = RestaurantPizza.query.get(id)
+
+    if not restaurant_pizza:
+        return jsonify({"error": "RestaurantPizza not found"}), 404
+    
+    pizza = Pizza.query.get(restaurant_pizza.pizza_id)
+    restaurant = Restaurant.query.get(restaurant_pizza.restaurant_id)
+
+    if not pizza or not restaurant:
+        return jsonify({"error": "Related pizza or restaurant not found"}), 404
+    response = {
+        "id": restaurant_pizza.id,
+        "price": restaurant_pizza.price,
+        "pizza_id": restaurant_pizza.pizza_id,
+        "restaurant_id": restaurant_pizza.restaurant_id,
+        "pizza": {
+            "id": pizza.id,
+            "name": pizza.name,
+            "ingredients": pizza.ingredients
+        },
+        "restaurant": {
+            "id": restaurant.id,
+            "name": restaurant.name,
+            "address": restaurant.address
+        }
+    }
+    return jsonify(response), 200
+
