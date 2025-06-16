@@ -21,7 +21,7 @@ A simple RESTful API for managing restaurants, pizzas, and their relationships. 
 1. **Clone the repository and navigate to the project directory:**
 
    ```bash
-   git clone <your-repo-url>
+   git clone git@github.com:BrianSila/pizza-api-challenge.git
    cd pizza-api-challenge
    ```
 
