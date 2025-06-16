@@ -82,34 +82,3 @@ def get_all_REstaurantPizzas():
         })
     
     return jsonify(response), 200
-
-@restaurant_pizza_cntrl.route('/restaurant_pizzas/<int:id>', methods=['GET'])
-def get_REstaurantPizza(id):
-    restaurant_pizza = RestaurantPizza.query.get(id)
-
-    if not restaurant_pizza:
-        return jsonify({"error": "RestaurantPizza not found"}), 404
-    
-    pizza = Pizza.query.get(restaurant_pizza.pizza_id)
-    restaurant = Restaurant.query.get(restaurant_pizza.restaurant_id)
-
-    if not pizza or not restaurant:
-        return jsonify({"error": "Related pizza or restaurant not found"}), 404
-    response = {
-        "id": restaurant_pizza.id,
-        "price": restaurant_pizza.price,
-        "pizza_id": restaurant_pizza.pizza_id,
-        "restaurant_id": restaurant_pizza.restaurant_id,
-        "pizza": {
-            "id": pizza.id,
-            "name": pizza.name,
-            "ingredients": pizza.ingredients
-        },
-        "restaurant": {
-            "id": restaurant.id,
-            "name": restaurant.name,
-            "address": restaurant.address
-        }
-    }
-    return jsonify(response), 200
-
