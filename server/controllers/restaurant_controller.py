@@ -17,7 +17,7 @@ def get_restaurants():
         })
     return jsonify(result), 200
 
-@restaurant_cntrl.route('/restaurants/<int: id>', methods=['GET'])
+@restaurant_cntrl.route('/restaurants/<int:id>', methods=['GET'])
 def get_restaurant(id):
     restaurant = Restaurant.query.get(id)
 
@@ -38,7 +38,7 @@ def get_restaurant(id):
         'pizzas': pizzas
     }), 200
 
-@restaurant_cntrl.route('/restaurants/<int: id>', methods=['DELETE'])
+@restaurant_cntrl.route('/restaurants/<int:id>', methods=['DELETE'])
 def delete_restaurant(id):
     restaurant = Restaurant.query.get(id)
 
